@@ -43,6 +43,6 @@ public class LectureReqDto {
     @Min(0) @Max(300)
     private int maxPrice;
 
-    @Min(1gi0)
+    @Min(10)
     private int limitOfEnrollment;
 }
