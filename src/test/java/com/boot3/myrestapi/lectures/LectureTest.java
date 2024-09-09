@@ -9,7 +9,7 @@ class LectureTest {
 
     @Test
     public void builder() {
-        Lecture lecture = Lecture.builder()
+        Lecture lecture = Lecture.builder()  //LectureBuilder
                 .name("Spring REST API")
                 .description("REST API development with Spring")
                 .build();
@@ -24,9 +24,8 @@ class LectureTest {
         Lecture lecture = new Lecture(); //When
         lecture.setName(name);
         lecture.setDescription(description);
-        assertThat
-                (lecture.getName()).isEqualTo("Lecture"); //Then
-        assertThat
-                (lecture.getDescription()).isEqualTo("Spring");
+
+        assertThat(lecture.getName()).isEqualTo("Lecture"); //Then
+        assertThat(lecture.getDescription()).isEqualTo("Spring");
     }
 }
