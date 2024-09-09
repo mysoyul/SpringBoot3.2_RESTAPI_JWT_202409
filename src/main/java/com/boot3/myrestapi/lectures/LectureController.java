@@ -64,7 +64,7 @@ public class LectureController {
         lectureResource.add(selfLinkBuilder.withSelfRel());
         lectureResource.add(selfLinkBuilder.withRel("update-lecture"));
 
-        return ResponseEntity.created(createUri).body(addLecture);
+        return ResponseEntity.created(createUri).body(lectureResource);
     }
 
     private static ResponseEntity<?> badRequest(Errors errors) {
