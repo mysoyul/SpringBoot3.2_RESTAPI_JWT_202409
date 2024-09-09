@@ -4,14 +4,17 @@ import java.io.IOException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.jackson.JsonComponent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.validation.Errors;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
+
 @JsonComponent
 @Slf4j
+//@Profile("test")
 public class ErrorsSerializer extends JsonSerializer<Errors>{
 	@Override
 	public void serialize(Errors errors, JsonGenerator gen, SerializerProvider serializers) throws IOException {
