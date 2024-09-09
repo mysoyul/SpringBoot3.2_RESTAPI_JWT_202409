@@ -1,6 +1,7 @@
 package com.boot3.myrestapi.lectures;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,9 +11,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of="id")
+@Entity
+@Table(name = "lectures")
 public class Lecture {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = false)
     private String name;
     private String description;
 
@@ -32,5 +37,7 @@ public class Lecture {
     private boolean offline;
 
     private boolean free;
+
+    @Enumerated(EnumType.STRING)
     private LectureStatus lectureStatus = LectureStatus.DRAFT;
 }    
