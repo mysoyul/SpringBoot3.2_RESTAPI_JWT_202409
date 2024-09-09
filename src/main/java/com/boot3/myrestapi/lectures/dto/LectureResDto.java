@@ -1,5 +1,6 @@
 package com.boot3.myrestapi.lectures.dto;
 
+import com.boot3.myrestapi.lectures.LectureStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +31,6 @@ public class LectureResDto {
     private int limitOfEnrollment;
     private boolean offline;
     private boolean free;
+    private LectureStatus lectureStatus;
     private String email;
 }
