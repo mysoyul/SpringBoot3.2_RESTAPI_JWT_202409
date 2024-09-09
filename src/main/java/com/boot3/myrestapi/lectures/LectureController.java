@@ -44,6 +44,9 @@ public class LectureController {
 
         //Dto => Entity Convert
         Lecture lecture = modelMapper.map(lectureReqDto, Lecture.class);
+        //free, offline 필드 update
+        lecture.update();
+
         Lecture addLecture = this.lectureRepository.save(lecture);
 
         WebMvcLinkBuilder selfLinkBuilder =
