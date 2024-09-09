@@ -1,10 +1,12 @@
 package com.boot3.myrestapi.lectures.dto;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.springframework.hateoas.RepresentationModel;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 public class LectureResource extends RepresentationModel<LectureResource> {
+    @JsonUnwrapped
     private final LectureResDto lectureResDto;
     
     public LectureResource(LectureResDto resDto) {
