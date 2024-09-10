@@ -21,6 +21,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -36,6 +37,20 @@ public class LectureController {
 //        this.lectureRepository = lectureRepository;
 //        System.out.println("LectureRepository 구현 클래스명" + lectureRepository.getClass().getName());
 //    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getLecture(@PathVariable Integer id) {
+        Optional<Lecture> optionalLecture = this.lectureRepository.findById(id);
+        if(optionalLecture.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Lecture lecture = optionalLecture.get();
+        LectureResDto lectureResDto = modelMapper.map(lecture, LectureResDto.class);
+        LectureResource lectureResource = new LectureResource(lectureResDto);
+        return ResponseEntity.ok(lectureResource);
+    }
 
     @GetMapping
     public ResponseEntity<?> queryLectures(Pageable pageable,PagedResourcesAssembler<LectureResDto> assembler) {
