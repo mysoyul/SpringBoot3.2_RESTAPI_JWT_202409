@@ -1,5 +1,6 @@
 package com.boot3.myrestapi.lectures;
 
+import com.boot3.myrestapi.security.userinfos.domain.UserInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,5 +48,8 @@ public class Lecture {
         // Update offline
         this.offline = this.location != null && !this.location.isBlank();
     }
+
+    @ManyToOne
+    private UserInfo userInfo;
 
 }    

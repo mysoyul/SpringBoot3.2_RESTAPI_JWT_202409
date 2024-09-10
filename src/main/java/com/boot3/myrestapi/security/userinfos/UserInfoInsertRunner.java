@@ -5,12 +5,14 @@ import com.boot3.myrestapi.security.userinfos.domain.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Order(2)
 public class UserInfoInsertRunner implements ApplicationRunner {
     @Autowired
     UserInfoRepository userInfoRepository;
