@@ -24,7 +24,7 @@ public class JwtService {
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
     public static final SecretKey KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
     private final static SecureDigestAlgorithm<SecretKey, SecretKey> ALGORITHM = Jwts.SIG.HS256;
-    public static final int ACCESS_EXPIRE = 3600;
+    public static final int ACCESS_EXPIRE = 3600; //3600초 - 1시간
 
     private Claims extractAllClaims(String token) {
         return Jwts
@@ -66,7 +66,7 @@ public class JwtService {
             return true;
         } catch (Exception ex) {
             throw new AuthenticationCredentialsNotFoundException(
-                    "JWT was exprired or incorrect",
+                    "JWT Token was expired or incorrect",
                     ex.fillInStackTrace());
         }
     }
@@ -75,11 +75,11 @@ public class JwtService {
         // ACCESS_EXPIRE 3600초 => 60분
         Date exprireDate = Date.from(Instant.now().plusSeconds(ACCESS_EXPIRE));
 
-        return Jwts.builder()
-                .signWith(KEY, ALGORITHM)
-                .subject(userName)
-                .issuedAt(new Date())
-                .expiration(exprireDate)
+        return Jwts.builder() //JwtBuilder
+                .signWith(KEY, ALGORITHM) //SecretKey 와 Algorithm 설정
+                .subject(userName)  //Subject
+                .issuedAt(new Date())  //발행시간
+                .expiration(exprireDate)  //만료시간
                 .compact();
     }
 
