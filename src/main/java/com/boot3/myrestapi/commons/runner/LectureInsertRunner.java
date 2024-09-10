@@ -37,8 +37,7 @@ public class LectureInsertRunner implements ApplicationRunner {
     }
 	
     private Lecture buildLecture(int index) {
-        UserInfo userInfo = userInfoRepository.findById(index)
-                .orElseThrow();
+        UserInfo userInfo = userInfoRepository.findById(index).orElseThrow();
         return Lecture.builder()
                     .name(index + " Lecture ")
                     .description("Test Lecture")
