@@ -7,6 +7,8 @@ import com.boot3.myrestapi.lectures.dto.LectureResDto;
 import com.boot3.myrestapi.lectures.dto.LectureResource;
 import com.boot3.myrestapi.lectures.validator.LectureValidator;
 
+import com.boot3.myrestapi.security.userinfos.annot.CurrentUser;
+import com.boot3.myrestapi.security.userinfos.domain.UserInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -92,15 +94,27 @@ public class LectureController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<?> queryLectures(Pageable pageable,PagedResourcesAssembler<LectureResDto> assembler) {
+    public ResponseEntity<?> queryLectures(Pageable pageable,
+                                           PagedResourcesAssembler<LectureResDto> assembler,
+                                           @CurrentUser UserInfo currentUser) {
         Page<Lecture> lecturePage = this.lectureRepository.findAll(pageable);
         //Page<Lecture> => Page<LectureResDto> 매핑
         Page<LectureResDto> lectureResDtoPage =
-                lecturePage.map(lecture -> modelMapper.map(lecture, LectureResDto.class));
+                lecturePage.map(lecture -> {
+                    LectureResDto lectureResDto = new LectureResDto();
+                    if (lecture.getUserInfo() != null) {
+                        lectureResDto.setEmail(lecture.getUserInfo().getEmail());
+                    }
+                    modelMapper.map(lecture, lectureResDto);
+                    return lectureResDto;
+                });
 //        PagedModel<EntityModel<LectureResDto>> pagedModel = assembler.toModel(lectureResDtoPage);
         PagedModel<LectureResource> pagedModel =
                 //assembler.toModel(lectureResDtoPage, lectureResDto -> new LectureResource(lectureResDto));
                 assembler.toModel(lectureResDtoPage, LectureResource::new);
+        if (currentUser != null) {
+            pagedModel.add(linkTo(LectureController.class).withRel("create-lecture"));
+        }
         return ResponseEntity.ok(pagedModel);
     }
 
