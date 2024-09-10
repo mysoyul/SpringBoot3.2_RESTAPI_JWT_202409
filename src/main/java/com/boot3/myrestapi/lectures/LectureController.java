@@ -21,6 +21,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.Errors;
@@ -63,8 +64,7 @@ public class LectureController {
 
         //Lecture 가 참조하는 UserInfo 객체와 인증한 UserInfo 객체가 다르면 401 인증 오류
         if((existingLecture.getUserInfo() != null) && (!existingLecture.getUserInfo().equals(currentUser))) {
-            throw new BadCredentialsException("등록한 User와 수정을 요청한 User가 다릅니다.");
-            //return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            throw new AccessDeniedException("등록한 User 와 수정을 요청한 User 가 달라서 수정 권한이 없습니다.");
         }
 
         this.modelMapper.map(lectureReqDto, existingLecture);
