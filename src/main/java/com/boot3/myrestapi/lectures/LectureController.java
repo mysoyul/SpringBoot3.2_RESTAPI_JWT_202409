@@ -120,7 +120,9 @@ public class LectureController {
 
 
     @PostMapping
-    public ResponseEntity<?> createLecture(@RequestBody @Valid LectureReqDto lectureReqDto, Errors errors) {
+    public ResponseEntity<?> createLecture(@RequestBody @Valid LectureReqDto lectureReqDto,
+                                           Errors errors,
+                                           @CurrentUser UserInfo currentUser) {
         //입력항목 오류 체크
         if(errors.hasErrors()) {
             return badRequest(errors);
@@ -138,9 +140,14 @@ public class LectureController {
         lecture.update();
         lecture.setLectureStatus(LectureStatus.PUBLISHED);
 
+        //Lecture 와 UserInfo 연관관계 설정
+        lecture.setUserInfo(currentUser);
+
         Lecture addLecture = this.lectureRepository.save(lecture);
         //Entity => Dto Convert
         LectureResDto lectureResDto = modelMapper.map(addLecture, LectureResDto.class);
+        //LectureResDto 에 UserInfo 객체의 email set
+        lectureResDto.setEmail(addLecture.getUserInfo().getEmail());
 
         WebMvcLinkBuilder selfLinkBuilder =
                 WebMvcLinkBuilder.linkTo(LectureController.class).slash(lectureResDto.getId());
