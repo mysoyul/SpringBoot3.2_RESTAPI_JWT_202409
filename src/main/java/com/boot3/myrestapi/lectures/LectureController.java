@@ -50,14 +50,18 @@ public class LectureController {
         if (errors.hasErrors()) {
             return badRequest(errors);
         }
+
         lectureValidator.validate(lectureReqDto, errors);
         if (errors.hasErrors()) {
             return badRequest(errors);
         }
 
         this.modelMapper.map(lectureReqDto, existingLecture);
+        //free, offline 필드 update
         existingLecture.update();
+        //DB 저장
         Lecture savedLecture = this.lectureRepository.save(existingLecture);
+        //수정된 Entity => ResDto
         LectureResDto lectureResDto = modelMapper.map(savedLecture, LectureResDto.class);
 
         LectureResource lectureResource = new LectureResource(lectureResDto);
@@ -115,6 +119,7 @@ public class LectureController {
         Lecture lecture = modelMapper.map(lectureReqDto, Lecture.class);
         //free, offline 필드 update
         lecture.update();
+        lecture.setLectureStatus(LectureStatus.PUBLISHED);
 
         Lecture addLecture = this.lectureRepository.save(lecture);
         //Entity => Dto Convert
